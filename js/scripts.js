@@ -28,12 +28,13 @@ const titleClickHandler = function(event){
   event.preventDefault();
 
   /* find the correct article using the selector (value of 'href' attribute) */
-  const findArticle = document.getElementById('post');
-  const findArticles = element.getAttribute('href');
-  console.log(findArticles);
+  const articleSelector = clickedElement.getAttribute("href");
+  console.log(articleSelector);
+  const targetArticle = document.querySelector(articleSelector);
+  console.log(targetArticle);
 
   /* add class 'active' to the correct article */
-  
+  targetArticle.classList.add('active');
 }
 
 const links = document.querySelectorAll('.titles a');
