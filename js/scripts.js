@@ -1,12 +1,24 @@
-const titleClickHandler = function(event){
-  console.log('Link was clicked!');
-  console.log(event);
+	const titleClickHandler = function(event){
+  	console.log('Link was clicked!');
+  	console.log(event);
 
   /* remove class 'active' from all article links  */
+  	const activeLinks = document.querySelectorAll('.titles a.active');
+
+	for(let activeLink of activeLinks){
+ 	 activeLink.classList.remove('active');
+ 	 console.log('Active was deleted');
+	}
 
   /* add class 'active' to the clicked link */
 
   /* remove class 'active' from all articles */
+  const activeArticles = document.querySelectorAll('.post.active');
+
+	for(let activeArticle of activeArticles){
+ 	 activeArticle.classList.remove('active');
+ 	 console.log('Active was deleted');
+ 	}
 
   /* get 'href' attribute from the clicked link */
 
@@ -21,7 +33,7 @@ for(let link of links){
   link.addEventListener('click', titleClickHandler);
 }
 
-Link was clicked!
+/*Link was clicked!
 scripts.js (2,3)
 
 
@@ -80,4 +92,4 @@ width: 1
 x: 92
 y: 225
 
-__proto__: PointerEventPrototype
+__proto__: PointerEventPrototype*/
