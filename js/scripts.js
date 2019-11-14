@@ -1,5 +1,6 @@
 'use strict';
-{const titleClickHandler = function(event){
+{
+  const titleClickHandler = function(event){
   const clickedElement = this;
   console.log('Link was clicked!');
   
@@ -55,10 +56,17 @@ const titleList = document.querySelector(optTitleListSelector).innerHTML = '';
   /* for each article */
  const articles = document.querySelectorAll(optArticleSelector);
 
-    /* get the article id */
+ for(let article of articles){
+ 	const titleList = document.querySelector(optTitleListSelector).innerHTML = '';
+ };
 
+    /* get the article id */
+ const articleId = clickedElement.getAttribute("id");
+
+ 
     /* find the title element */
 
+const articleTitle = article.querySelector(optTitleSelector).innerHTML;
     /* get the title from the title element */
 
     /* create HTML of the link */
