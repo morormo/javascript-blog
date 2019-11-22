@@ -1,13 +1,20 @@
 {
 
   'use strict';
+/* Varaibles */
 
   const optArticleSelector = '.post',
-    optTitleSelector = '.post-title',
-    optTitleListSelector = '.titles',
-    optArticleTagsSelector = '.post-tags .list',
-    optArticleAuthorSelector = '.post-author',
-    optTagsListSelector = '.tags.list';
+        optTitleSelector = '.post-title',
+        optTitleListSelector = '.titles',
+        optArticleTagsSelector = '.post-tags .list',
+        optArticleAuthorSelector = '.post-author',
+        optTagsListSelector = '.tags.list',
+        optCloudClassCount = 5,
+        optCloudClassPrefix = 'tag-size-';
+        optAuthorsListSelector = '.list.authors a'
+
+/*END Varaibles */
+
 
   const titleClickHandler = function(event){
   const clickedElement = this;
@@ -88,6 +95,30 @@ function generateTitleLinks(){
 
 generateTitleLinks();
 
+function calculateTagsParams(tags){
+const params = {
+    max: 0,
+    min: 999999,
+  };
+  for(let tag in tags){
+    params.max = Math.max(tags[tag], params.max);
+    params.min = Math.min(tags[tag], params.min);
+
+  }
+
+  return params;
+} 
+
+function calculateTagClass(count, params){
+
+  const normalizedCount = count - params.min;
+  const normalizedMax = params.max - params.min;
+  const percentage = normalizedCount/normalizedMax;
+  const classNumber = Math.floor(percentage * (optCloudClassCount -1) + 1 );
+  const classAndValueNumber = optCloudClassPrefix + classNumber;
+  return classAndValueNumber;
+}
+
 function generateTags(){
   /* [NEW] create a new variable allTags with an empty object */
   let allTags = {};
@@ -132,12 +163,13 @@ function generateTags(){
   const tagList = document.querySelector('.tags');
 
   /* [NEW] create variable for all links HTML code */
+  const tagsParams = calculateTagsParams(allTags);
   let allTagsHTML = '';
 
   /* [NEW] START LOOP: for each tag in allTags */
   for(let tag in allTags){
     /* [NEW] generate code of a link and add it to allTagsHTML */
-    allTagsHTML +='<li> <a href="#tag-'+ tag + '"<span>' + tag + ' (' + allTags[tag] + ')' + '</span></a></li> ';
+    allTagsHTML += '<li><a class="' + calculateTagClass(allTags[tag], tagsParams) +  '" href="#tag-' + tag + '">' + tag + ' ' + '</a></li>';
   /* [NEW] END LOOP: for each tag in allTags */
   }
   /* add html from allTagsHTML to tagList */
@@ -193,8 +225,9 @@ function addClickListenersToTags(){
 
 addClickListenersToTags();
 
-function generateAuthor(){
-
+function generateAuthors(){
+  /*[NEW] create a new variable allAuthors with an empty object */
+  let allAuthors = {};
   /* find all articles */
   const articles = document.querySelectorAll(optArticleSelector);
    /* START LOOP: for every article: */
@@ -209,15 +242,37 @@ function generateAuthor(){
     const authorHTML = '<a href="#author-' + articleAuthors + '"> ' + articleAuthors + '</a>';
     /* add generated code to html variable */
     html= html+authorHTML;
-      
-      /* insert HTML of all the links into the tags wrapper */
-    console.log(html);
+    /* [NEW] check if this link is NOT alredy in allAuthors */
+
+      if (!allAuthors.hasOwnProperty(articleAuthors)) {
+
+        /* [NEW add generated code to allAuthors array] */
+        allAuthors[articleAuthors] = 1;
+      } else {
+        allAuthors[articleAuthors]++;
+      } 
+    /* insert HTML of all the links into the tags wrapper */
+    authorList.innerHTML= html ;
+    
   /* END LOOP: for every article: */
   }
- generateAuthor();
+  /* [NEW] find list of authors in right column */
+    const authorList = document.querySelector('.authors');
 
+    /* [NEW] create variable for all links HTML code*/
+    let allAuthorsHTML = '';;
+
+    /* [NEW] START LOOP for each authors on allAuthors */
+    for (let author in allAuthors){
+    /* [NEW] generate code of a link and aad it to allAuthorsHTML */
+    allAuthorsHTML += '<li><a href="#author-' + author + '">' +  author + ' (' + allAuthors[author] + ')' + '</a></li>';
+      
+    /* [NEW] add html from allAuthorsHTML to authorList */
+    authorList.innerHTML = allAuthorsHTML;  //to authorList inside HTML put corect HTML
+  }
+ 
 }
-
+generateAuthors();
 
 function authorClickHandler(event){
   /* prevent default action for this event */
@@ -264,5 +319,6 @@ function addClickListenersToAuthors(){
 }
 addClickListenersToAuthors();
 }
+
 
 
